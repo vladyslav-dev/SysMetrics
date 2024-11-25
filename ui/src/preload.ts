@@ -1,2 +1,7 @@
-// See the Electron documentation for details on how to use preload scripts:
-// https://www.electronjs.org/docs/latest/tutorial/process-model#preload-scripts
+import { contextBridge, ipcRenderer } from 'electron';
+
+contextBridge.exposeInMainWorld('electronAPI', {
+  onSystemStats: (callback: (data: string) => void) => {
+    ipcRenderer.on('system-stats', (_, data: string) => callback(data));
+  },
+});
