@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { SystemStats } from './types/stats.d';
+import { SystemStats } from '../types/stats.d'
 
 const App: React.FC = () => {
   const [stats, setStats] = useState<SystemStats | null>(null);
@@ -20,8 +20,8 @@ const App: React.FC = () => {
   }
 
   return (
-    <div>
-      <h1>System Monitor</h1>
+    <div className='test'>
+      <h1 className="bg-gray-500 text-center text-white">sadfsadfas;kdflj</h1>
       {/* <CPUChart usage={stats.cpu.usage_percent} cores={stats.cpu.cores} />
       <RAMChart stats={stats.memory} />
       <DiskChart stats={stats.disk} />

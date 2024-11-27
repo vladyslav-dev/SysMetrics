@@ -12,6 +12,8 @@ const createWindow = () => {
   mainWindow = new BrowserWindow({
     width: 1024,
     height: 768,
+    transparent: false,
+    frame: true,
     webPreferences: {
       contextIsolation: true,
       nodeIntegration: true,
@@ -23,7 +25,7 @@ const createWindow = () => {
 
   mainWindow.loadURL(MAIN_WINDOW_WEBPACK_ENTRY);
 
-  mainWindow.webContents.openDevTools();
+  // mainWindow.webContents.openDevTools();
 
   // Resolve the Go binary path
   const sendStats = (data: any) => {
@@ -85,5 +87,3 @@ const createWindow = () => {
 };
 
 app.on('ready', createWindow);
-
-
