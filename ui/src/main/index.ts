@@ -10,8 +10,8 @@ let goProcess: ReturnType<typeof spawn>;
 
 const createWindow = () => {
   mainWindow = new BrowserWindow({
-    width: 1024,
-    height: 768,
+    width: 724,
+    height: 598,
     transparent: false,
     frame: true,
     webPreferences: {

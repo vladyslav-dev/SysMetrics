@@ -1,19 +1,13 @@
 import type { Configuration } from 'webpack';
-import path from 'path';
 
 import { rules } from './webpack.rules';
 import { plugins } from './webpack.plugins';
 
-// rules.push({
-//   test: /\.css$/,
-//   use: [{ loader: 'style-loader' }, { loader: 'css-loader' }],
-// });
-
 rules.push({
   test: /\.css$/,
-  include: path.resolve(__dirname, 'src'),
-  use: ['style-loader', 'css-loader', 'postcss-loader'],
-})
+  use: [{ loader: 'style-loader' }, { loader: 'css-loader' }],
+});
+
 
 export const rendererConfig: Configuration = {
   module: {

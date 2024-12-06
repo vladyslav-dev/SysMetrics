@@ -1,0 +1,165 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  body {
+    font-family: Arial, sans-serif;
+    background-color: #1e1e2f;
+    color: #ffffff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+  }
+  
+  h1 {
+    margin-bottom: 20px;
+    font-size: 24px;
+    color: #7289da;
+  }
+  
+  .dashboard {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); 
+    gap: 20px;
+    max-width: 1200px;
+    width: 100%;
+  }
+  
+  .card {
+    background-color: #292943;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+  
+  .card:last-child {
+    grid-column: span 2; 
+  }
+  
+  .card h2 {
+    font-size: 18px;
+    margin-bottom: 15px;
+    color: #82c6e2;
+  }
+  
+  .circle-chart {
+    position: relative;
+    width: 120px; 
+    height: 120px;
+    margin: 10px auto;
+  }
+  
+  .circle-chart svg {
+    width: 120px;
+    height: 120px;
+    transform: rotate(-90deg); 
+  }
+  
+  .circle-chart circle {
+    fill: none;
+    stroke-width: 10; 
+  }
+  
+  .circle-chart .background {
+    stroke: #44445a;
+  }
+  
+  .circle-chart .progress {
+    stroke: #00ffcc; 
+    stroke-dasharray: 314; 
+    stroke-dashoffset: calc(314 - (314 * var(--percent)) / 100); 
+    transition: stroke-dashoffset 0.5s ease-in-out;
+  }
+  
+  .circle-chart span {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 18px;
+    font-weight: bold;
+    color: #ffffff; 
+  }
+  
+  .stats {
+    margin-top: 10px;
+    font-size: 14px;
+  }
+  
+  .stats div {
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .network-stats {
+    margin-top: 15px;
+  }
+  
+  .bar {
+    height: 8px;
+    background-color: #44445a;
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 10px;
+  }
+  
+  .bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #ff7675, #00cec9);
+    width: calc(var(--percent, 50) * 1%);
+    transition: width 0.5s ease-in-out;
+  }
+  
+  .system-info {
+    font-size: 14px;
+    margin-top: 15px;
+  }
+  
+  .system-info div {
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  /* Media Queries */
+  @media (max-width: 568px) {
+    .dashboard {
+      grid-template-columns: 1fr; /* Single column on smaller screens */
+    }
+  
+    .card:last-child {
+      grid-column: span 1; /* No longer full-width on mobile */
+    }
+  
+    h1 {
+      font-size: 20px; /* Smaller heading */
+    }
+  
+    .circle-chart {
+      width: 80px; /* Smaller charts */
+      height: 80px;
+    }
+  
+    .circle-chart svg {
+      width: 80px;
+      height: 80px;
+    }
+  
+    .circle-chart span {
+      font-size: 14px; /* Adjust text size */
+    }
+  
+    .stats {
+      font-size: 12px;
+    }
+  
+    .bar {
+      height: 6px; /* Adjust bar height */
+    }
+  
+    .system-info {
+      font-size: 12px;
+    }
+  }

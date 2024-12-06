@@ -1,5 +1,5 @@
 import { createRoot } from 'react-dom/client';
-import "./tailwind.css";
+import "./style.css";
 import App from "./App";
 
 interface ElectronAPI {
@@ -11,6 +11,7 @@ declare global {
     electronAPI: ElectronAPI;
   }
 }
+
 
 const root = createRoot(document.getElementById('app'));
 root.render(<App />);

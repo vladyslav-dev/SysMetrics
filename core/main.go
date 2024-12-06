@@ -6,6 +6,7 @@ import (
 	"log"
 	"os"
 	"runtime"
+	"sync"
 	"time"
 
 	"github.com/shirou/gopsutil/v3/cpu"
@@ -18,9 +19,7 @@ const (
 	UnitPercentage = "%"
 	UnitCores      = "Cores"
 	UnitGB         = "GB"
-	UnitMB         = "MB"
-	UnitBytes      = "Bytes"
-	UnitMBps       = "MBps"
+	UnitMbps       = "Mbps"
 	UnitHours      = "Hours"
 )
 
@@ -113,17 +112,17 @@ func GetMemoryMetrics() MemoryMetrics {
 	return MemoryMetrics{
 		Total: Metric{
 			Original: vm.Total,
-			Value:    formatBytes(vm.Total),
+			Value:    formatBytes(vm.Total, UnitGB),
 			Unit:     UnitGB,
 		},
 		Used: Metric{
 			Original: vm.Used,
-			Value:    formatBytes(vm.Used),
+			Value:    formatBytes(vm.Used, UnitGB),
 			Unit:     UnitGB,
 		},
 		Free: Metric{
 			Original: vm.Free,
-			Value:    formatBytes(vm.Free),
+			Value:    formatBytes(vm.Free, UnitGB),
 			Unit:     UnitGB,
 		},
 		UsedPercent: Metric{
@@ -139,37 +138,60 @@ func GetDiskMetrics() DiskMetrics {
 	return DiskMetrics{
 		Total: Metric{
 			Original: usage.Total,
-			Value:    formatBytes(usage.Total),
+			Value:    formatBytes(usage.Total, UnitGB),
 			Unit:     UnitGB,
 		},
 		Used: Metric{
 			Original: usage.Used,
-			Value:    formatBytes(usage.Used),
+			Value:    formatBytes(usage.Used, UnitGB),
 			Unit:     UnitGB,
 		},
 		Free: Metric{
 			Original: usage.Free,
-			Value:    formatBytes(usage.Free),
+			Value:    formatBytes(usage.Free, UnitGB),
 			Unit:     UnitGB,
 		},
 	}
 }
+
+var (
+	prevBytesSent uint64
+	prevBytesRecv uint64
+	mu            sync.Mutex
+)
 
 func GetNetworkMetrics() NetworkMetrics {
 	ioCounters, _ := net.IOCounters(false)
 	if len(ioCounters) == 0 {
 		return NetworkMetrics{}
 	}
+
+	// Поточні значення
+	currentBytesSent := ioCounters[0].BytesSent
+	currentBytesRecv := ioCounters[0].BytesRecv
+
+	// Блокування для безпечного доступу до попередніх значень
+	mu.Lock()
+	defer mu.Unlock()
+
+	// Обчислення дельти
+	uploadDelta := currentBytesSent - prevBytesSent
+	downloadDelta := currentBytesRecv - prevBytesRecv
+
+	// Оновлення попередніх значень
+	prevBytesSent = currentBytesSent
+	prevBytesRecv = currentBytesRecv
+
 	return NetworkMetrics{
 		UploadSpeed: Metric{
-			Original: ioCounters[0].BytesSent,
-			Value:    formatBytes(ioCounters[0].BytesSent),
-			Unit:     UnitMBps,
+			Original: uploadDelta,
+			Value:    formatBytes(uploadDelta, UnitMbps),
+			Unit:     UnitMbps,
 		},
 		DownloadSpeed: Metric{
-			Original: ioCounters[0].BytesRecv,
-			Value:    formatBytes(ioCounters[0].BytesRecv),
-			Unit:     UnitMBps,
+			Original: downloadDelta,
+			Value:    formatBytes(downloadDelta, UnitMbps),
+			Unit:     UnitMbps,
 		},
 	}
 }
@@ -189,16 +211,13 @@ func GetSystemInfo() SystemInfo {
 	}
 }
 
-func formatBytes(bytes uint64) string {
-	const unit = 1024
-	if bytes < unit {
-		return fmt.Sprintf("%d %s", bytes, UnitBytes)
+func formatBytes(bytes uint64, unit string) string {
+	switch unit {
+	case UnitGB:
+		return fmt.Sprintf("%.2f", float64(bytes)/(1024*1024*1024))
+	case UnitMbps:
+		return fmt.Sprintf("%.2f", (float64(bytes)*8)/(1024*1024))
+	default:
+		return fmt.Sprintf("%d", bytes)
 	}
-	div, exp := unit, 0
-	for n := bytes / unit; n >= unit; n /= unit {
-		div *= unit
-		exp++
-	}
-	value := float64(bytes) / float64(div)
-	return fmt.Sprintf("%.2f", value)
 }
