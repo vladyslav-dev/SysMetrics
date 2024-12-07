@@ -13,7 +13,7 @@ import { rendererConfig } from './webpack.renderer.config';
 
 const config: ForgeConfig = {
   packagerConfig: {
-    asar: true, // Package asar for app resources
+    asar: true,
     extraResource: ['./src/sysmetrics'],
   },
   rebuildConfig: {},

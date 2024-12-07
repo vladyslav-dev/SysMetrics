@@ -21,11 +21,9 @@ const createWindow = () => {
     },  
   });
 
-  
-
   mainWindow.loadURL(MAIN_WINDOW_WEBPACK_ENTRY);
 
-  // mainWindow.webContents.openDevTools();
+  mainWindow.webContents.openDevTools();
 
   // Resolve the Go binary path
   const sendStats = (data: any) => {
@@ -68,13 +66,7 @@ const createWindow = () => {
   });
 
   app.on('before-quit', () => {
-    if (goProcess) goProcess.kill();
-  });
-
-  app.on('window-all-closed', () => {
-    if (process.platform !== 'darwin') {
-      app.quit();
-    }
+    if (goProcess) goProcess.kill('SIGTERM'); // Ensure the Go process is terminated
   });
 
   app.on('activate', () => {
