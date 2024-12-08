@@ -8,10 +8,10 @@ import (
 	"runtime"
 	"time"
 
-	"github.com/shirou/gopsutil/v3/cpu"
-	"github.com/shirou/gopsutil/v3/disk"
-	"github.com/shirou/gopsutil/v3/mem"
-	"github.com/shirou/gopsutil/v3/net"
+	"github.com/shirou/gopsutil/v4/cpu"
+	"github.com/shirou/gopsutil/v4/disk"
+	"github.com/shirou/gopsutil/v4/mem"
+	"github.com/shirou/gopsutil/v4/net"
 )
 
 const (
@@ -93,21 +93,8 @@ func GetCPUMetrics() CPUMetrics {
 	usage, err := cpu.Percent(0, false)
 	if err != nil {
 		log.Printf("Error fetching CPU usage: %v", err)
-		return CPUMetrics{
-			UsagePercent: Metric{
-				Original: 0,
-				Value:    "0.00",
-				Unit:     UnitPercentage,
-			},
-			Cores: Metric{
-				Original: 0,
-				Value:    "0",
-				Unit:     UnitCores,
-			},
-		}
 	}
 
-	// Handle empty slice to avoid index out of range error
 	var usagePercent float64
 	if len(usage) > 0 {
 		usagePercent = usage[0]
@@ -185,7 +172,6 @@ func GetDiskMetrics() DiskMetrics {
 var (
 	prevBytesSent uint64
 	prevBytesRecv uint64
-	// mu            sync.Mutex
 )
 
 func GetNetworkMetrics() NetworkMetrics {
@@ -194,19 +180,12 @@ func GetNetworkMetrics() NetworkMetrics {
 		return NetworkMetrics{}
 	}
 
-	// Поточні значення
 	currentBytesSent := ioCounters[0].BytesSent
 	currentBytesRecv := ioCounters[0].BytesRecv
 
-	// // Блокування для безпечного доступу до попередніх значень
-	// mu.Lock()
-	// defer mu.Unlock()
-
-	// Обчислення дельти
 	uploadDelta := currentBytesSent - prevBytesSent
 	downloadDelta := currentBytesRecv - prevBytesRecv
 
-	// Оновлення попередніх значень
 	prevBytesSent = currentBytesSent
 	prevBytesRecv = currentBytesRecv
 
