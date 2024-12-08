@@ -72,7 +72,7 @@ const createWindow = () => {
     if (BrowserWindow.getAllWindows().length === 0) {
       createWindow();
     }
-});
+  });
 };
 
 app.on('ready', createWindow);
