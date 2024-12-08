@@ -13,11 +13,17 @@ import { rendererConfig } from './webpack.renderer.config';
 
 const config: ForgeConfig = {
   packagerConfig: {
+    name: "SysMetrics",
     asar: true,
     extraResource: ['./src/sysmetrics'],
   },
   rebuildConfig: {},
-  makers: [new MakerSquirrel({}), new MakerZIP({}, ['darwin']), new MakerRpm({}), new MakerDeb({})],
+  makers: [
+    new MakerSquirrel({}), 
+    new MakerZIP({}, ['darwin', 'linux', 'win32']), 
+    new MakerRpm({}), 
+    new MakerDeb({})
+  ],
   plugins: [
     new AutoUnpackNativesPlugin({}),
     new WebpackPlugin({

@@ -23,9 +23,6 @@ const createWindow = () => {
 
   mainWindow.loadURL(MAIN_WINDOW_WEBPACK_ENTRY);
 
-  mainWindow.webContents.openDevTools();
-
-  // Resolve the Go binary path
   const sendStats = (data: any) => {
     mainWindow.webContents.send('system-stats', {
       data: data.toString(),

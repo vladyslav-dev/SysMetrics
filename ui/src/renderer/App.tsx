@@ -7,11 +7,9 @@ const App: React.FC = () => {
 
   useEffect(() => {
     window.electronAPI.onSystemStats((data: any) => {
-      console.log('data', data)
       if (stats === null) {
         const parsedData: Metrics = JSON.parse(data.data);
 
-        // Update state for SystemStats
         setStats(parsedData);
       }
      
