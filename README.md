@@ -75,5 +75,3 @@ cd system-metrics
    npm run make
    ```
 2. The `.exe` file will be available in the `out/make/squirrel.windows` directory.
-
----
