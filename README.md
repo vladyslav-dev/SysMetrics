@@ -2,9 +2,13 @@
 
 System Metrics is a cross-platform desktop application designed for real-time monitoring of system performance. Built using modern technologies like Electron, React, and Golang, it provides detailed insights into CPU, Memory, Disk, and Network usage with sleek visualizations.
 
+<img width="717" alt="Screenshot 2025-01-27 at 9 55 49 PM" src="https://github.com/user-attachments/assets/d5f3e16a-496d-4727-b88b-a18cd5e84f42" />
+
+
 ---
 
 ## Features
+
 
 - **CPU Monitoring**: Real-time CPU usage percentage and the number of cores.
 - **Memory Insights**: Total, used, and free memory in GB, with percentage usage.
