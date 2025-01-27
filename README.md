@@ -77,7 +77,3 @@ cd system-metrics
 2. The `.exe` file will be available in the `out/make/squirrel.windows` directory.
 
 ---
-
-## License
-
-This project is licensed under the MIT License. See the LICENSE file for details.
